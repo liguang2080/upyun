@@ -9,7 +9,7 @@ module Upyun
     attr_accessor :api_domain, :api_form_secret
 
     def initialize(bucketname, username, password, options = {})
-      options = { :api_domain = "v0.api.upyun.com", :api_form_secret = ""}.merge(options)
+      options = { :api_domain => "v0.api.upyun.com", :api_form_secret => ""}.merge(options)
       @bucketname = bucketname
       @username = username
       @password = Digest::MD5.hexdigest(password)
