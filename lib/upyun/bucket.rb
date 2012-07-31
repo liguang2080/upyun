@@ -32,7 +32,7 @@ module Upyun
           'mkdir' => mkdir
         }
 
-        response = http.send_request(method, uri.request_uri, fd.read, headers)
+        http.send_request(method, uri.request_uri, fd.read, headers)
       end
     end
     
@@ -61,10 +61,10 @@ module Upyun
         image_attributes = { :mid => mid, :url => url }
         
         if params["image-width"] && params["image-height"] && params["image-frames"] && params["image-type"]
-          image_attributes[:width] => params["image-width"].to_i
-          image_attributes[:height] => params["image-height"].to_i
-          image_attributes[:frames] => params["image-frames"].to_i
-          image_attributes[:file_type] => params["image-type"]
+          image_attributes[:width] = params["image-width"].to_i
+          image_attributes[:height] = params["image-height"].to_i
+          image_attributes[:frames] = params["image-frames"].to_i
+          image_attributes[:file_type] = params["image-type"]
         end
         image_attributes
       else
