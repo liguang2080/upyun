@@ -37,7 +37,7 @@ module Upyun
     end
     
     # 生成api使用的policy 以及 signature  可以是图片或者是文件附件 图片最大为1M 文件附件最大为5M
-    def api_form_params(file_type = "pic", notify_url = "http://localhost")
+    def api_form_params(file_type = "pic", notify_url = "http://localhost/upyun_images/notify/space_name")
       policy_doc = {
         "bucket" => bucketname,
         "expiration" => Time.now.to_i + 86400,
@@ -52,6 +52,24 @@ module Upyun
       signature = Digest::MD5.hexdigest(policy + "&" + api_form_secret)
       
       {:policy => policy, :signature => signature}
+    end
+    
+    def parse_notify_params(params)
+      if params[:sign] == Digest::MD5.hexdigest("#{params[:code]}&#{params[:message]}&#{params[:url]}&#{params[:time]}&#{api_form_secret}")
+        url = "#{bucketname}.b0.upaiyun.com#{params[:url]}"
+        mid = Digest::MD5.hexdigest(url)
+        image_attributes = { :mid => mid, :url => url }
+        
+        if params["image-width"] && params["image-height"] && params["image-frames"] && params["image-type"]
+          image_attributes[:width] => params["image-width"].to_i
+          image_attributes[:height] => params["image-height"].to_i
+          image_attributes[:frames] => params["image-frames"].to_i
+          image_attributes[:file_type] => params["image-type"]
+        end
+        image_attributes
+      else
+        nil
+      end
     end
 
     private
