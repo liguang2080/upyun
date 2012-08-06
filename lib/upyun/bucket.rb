@@ -55,7 +55,7 @@ module Upyun
     end
     
     def parse_notify_params(params)
-      if params[:sign] == Digest::MD5.hexdigest("#{params[:code]}&#{params[:message]}&#{params[:url]}&#{params[:time]}&#{api_form_secret}")
+      if params[:code] == "200" && (params[:sign] == Digest::MD5.hexdigest("#{params[:code]}&#{params[:message]}&#{params[:url]}&#{params[:time]}&#{api_form_secret}"))
         url = "http://#{bucketname}.b0.upaiyun.com#{params[:url]}"
         mid = Digest::MD5.hexdigest(url)
         image_attributes = { :mid => mid, :url => url }
