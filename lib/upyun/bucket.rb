@@ -17,18 +17,18 @@ module Upyun
       @api_form_secret = options[:api_form_secret]
     end
 
-    def writeFile(filepath, fd, mkdir='true')
+    def write_file(filepath, fd, mkdir='true')
       url = "http://#{api_domain}/#{bucketname}#{filepath}"
       uri = URI.parse(URI.encode(url))
 
       Net::HTTP.start(uri.host, uri.port) do |http|
-        date = getGMTDate
+        date = get_gmt_date
         length = File.size(fd)
         method = 'PUT'
         headers = {
           'Date' => date,
           'Content-Length' => length.to_s,
-          'Authorization' => sign(method, getGMTDate, "/#{@bucketname}#{filepath}", length),
+          'Authorization' => sign(method, get_gmt_date, "/#{@bucketname}#{filepath}", length),
           'mkdir' => mkdir
         }
 
@@ -73,7 +73,7 @@ module Upyun
     end
 
     private
-    def getGMTDate
+    def get_gmt_date
       Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
     end
 
