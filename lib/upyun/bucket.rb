@@ -40,7 +40,7 @@ module Upyun
     def api_form_params(file_type = "pic", notify_url = "http://localhost/upyun_images/notify/space_name")
       policy_doc = {
         "bucket" => bucketname,
-        "expiration" => Time.now.to_i + 86400,
+        "expiration" => Date.today.to_time + 86400 + 3600,
         "save-key" => "/{year}/{mon}/{random}{.suffix}",
         "notify-url" => notify_url
       }
