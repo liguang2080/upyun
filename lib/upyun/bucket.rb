@@ -31,7 +31,7 @@ module Upyun
           'Authorization' => sign(method, get_gmt_date, "/#{@bucketname}#{filepath}", length),
           'mkdir' => mkdir
         }
-
+        
         http.send_request(method, uri.request_uri, fd.read, headers)
       end
     end
@@ -40,7 +40,7 @@ module Upyun
     def api_form_params(file_type = "pic", notify_url = "http://localhost/upyun_images/notify/space_name")
       policy_doc = {
         "bucket" => bucketname,
-        "expiration" => Date.today.to_time + 86400 + 3600,
+        "expiration" => DateTime.now.next_day,
         "save-key" => "/{year}/{mon}/{random}{.suffix}",
         "notify-url" => notify_url
       }
@@ -74,7 +74,7 @@ module Upyun
 
     private
     def get_gmt_date
-      Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
+      DateTime.now.utc.strftime('%a, %d %b %Y %H:%M:%S GMT')
     end
 
     def sign(method, date, url, length)
