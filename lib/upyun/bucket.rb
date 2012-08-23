@@ -40,7 +40,8 @@ module Upyun
     def api_form_params(file_type = "pic", notify_url = "", return_url = "")
       policy_doc = {
         "bucket" => bucketname,
-        "expiration" => DateTime.now.next_day.to_i,
+        "expiration" => (Time.now + 10.years).to_i,
+        # "expiration" => DateTime.now.next_day.to_i,
         "save-key" => "/{year}/{mon}/{random}{.suffix}",
         "notify-url" => notify_url,
         "return-url" => return_url
