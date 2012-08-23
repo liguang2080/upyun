@@ -31,11 +31,11 @@ module Upyun
           'Authorization' => sign(method, get_gmt_date, "/#{@bucketname}#{filepath}", length),
           'mkdir' => mkdir
         }
-        
+
         http.send_request(method, uri.request_uri, fd.read, headers)
       end
     end
-    
+
     # 生成api使用的policy 以及 signature  可以是图片或者是文件附件 图片最大为1M 文件附件最大为5M
     def api_form_params(file_type = "pic", notify_url = "", return_url = "", expire_date = 1.days)
       policy_doc = {
@@ -45,22 +45,23 @@ module Upyun
         "notify-url" => notify_url,
         "return-url" => return_url
       }
-      
+
       policy_doc = policy_doc.merge({"allow-file-type" => "jpg,jpeg,gif,png", "content-length-range" => "0,1048576"}) if file_type == "pic"
       policy_doc = policy_doc.merge({"allow-file-type" => "doc docx xls xlsx ppt txt zip rar", "content-length-range" => "0,5242880"}) if file_type == "file"
-      
+
       policy = Base64.encode64(policy_doc.to_json).gsub("\n", "").strip
       signature = Digest::MD5.hexdigest(policy + "&" + api_form_secret)
-      
+
       {:policy => policy, :signature => signature}
     end
-    
+
     def parse_notify_params(params)
+      params = params.with_indifferent_access
       if params[:code] == "200" && (params[:sign] == Digest::MD5.hexdigest("#{params[:code]}&#{params[:message]}&#{params[:url]}&#{params[:time]}&#{api_form_secret}"))
         url = "http://#{bucketname}.b0.upaiyun.com#{params[:url]}"
         mid = Digest::MD5.hexdigest(url)
         image_attributes = { :mid => mid, :url => url }
-        
+
         if params["image-width"] && params["image-height"] && params["image-frames"] && params["image-type"]
           image_attributes[:width] = params["image-width"].to_i
           image_attributes[:height] = params["image-height"].to_i
