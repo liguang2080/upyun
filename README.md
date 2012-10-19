@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-	up_client = UpYun::Bucket.new("by-test-upload", "ichihuo", "andy3197")
+	up_client = UpYun::Bucket.new("by-test-upload", "ichihuo", "********")
 	res = up_client.writeFile("/test.png", File.new("test.png"))
 	res['x-upyun-width']
 
