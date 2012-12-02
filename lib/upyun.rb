@@ -9,6 +9,6 @@ module Upyun
   
   # 为给定的路径与文件名生成保存后的远程路径
   def self.rand_save_path(filename)
-    "/#{Date.today.year}/#{'%2s' % Date.today.month.to_s.rjust(2, "0")}/#{RandomCode.mix_string(16).downcase}_#{File.basename(filename)}"
+    "/#{Date.today.year}/#{'%2s' % Date.today.month.to_s.rjust(2, "0")}/#{RandomCode.mix_string(32).downcase}#{File.extname(filename)}"
   end
 end
