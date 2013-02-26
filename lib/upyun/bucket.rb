@@ -46,7 +46,7 @@ module Upyun
         "return-url" => return_url
       }
 
-      policy_doc = policy_doc.merge({"allow-file-type" => "jpg,jpeg,gif,png", "content-length-range" => "0,1048576"}) if file_type == "pic"
+      policy_doc = policy_doc.merge({"allow-file-type" => "jpg,jpeg,gif,png,bmp", "content-length-range" => "0,1048576"}) if file_type == "pic"
       policy_doc = policy_doc.merge({"allow-file-type" => "doc docx xls xlsx ppt txt zip rar", "content-length-range" => "0,5242880"}) if file_type == "file"
 
       policy = Base64.encode64(policy_doc.to_json).gsub("\n", "").strip
