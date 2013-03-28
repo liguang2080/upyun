@@ -60,7 +60,7 @@ module Upyun
       if params[:code].to_s == "200" && (params[:sign] == Digest::MD5.hexdigest("#{params[:code]}&#{params[:message]}&#{params[:url]}&#{params[:time]}&#{api_form_secret}"))
         url = "http://#{bucketname}.b0.upaiyun.com#{params[:url]}"
         mid = Digest::MD5.hexdigest(url)
-        image_attributes = { :mid => mid, :url => url }
+        image_attributes = { :mid => mid, :url => url, :bucket => bucketname }
 
         if params["image-width"] && params["image-height"] && params["image-frames"] && params["image-type"]
           image_attributes[:width] = params["image-width"].to_i
