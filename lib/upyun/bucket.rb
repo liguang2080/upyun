@@ -36,7 +36,7 @@ module Upyun
       end
     end
 
-    # 生成api使用的policy 以及 signature  可以是图片或者是文件附件 图片最大为1M 文件附件最大为5M
+    # 生成api使用的policy 以及 signature  可以是图片或者是文件附件 图片最大为2M 文件附件最大为5M
     def api_form_params(file_type = "pic", notify_url = "", return_url = "", expire_date = 1.days)
       policy_doc = {
         "bucket" => bucketname,
@@ -46,7 +46,7 @@ module Upyun
         "return-url" => return_url
       }
 
-      policy_doc = policy_doc.merge({"allow-file-type" => "jpg,jpeg,gif,png,bmp", "content-length-range" => "0,1048576"}) if file_type == "pic"
+      policy_doc = policy_doc.merge({"allow-file-type" => "jpg,jpeg,gif,png,bmp", "content-length-range" => "0,2048576"}) if file_type == "pic"
       policy_doc = policy_doc.merge({"allow-file-type" => "doc docx xls xlsx ppt txt zip rar", "content-length-range" => "0,5242880"}) if file_type == "file"
 
       policy = Base64.encode64(policy_doc.to_json).gsub("\n", "").strip
